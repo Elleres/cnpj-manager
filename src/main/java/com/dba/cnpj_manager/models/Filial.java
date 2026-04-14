@@ -4,12 +4,16 @@ import jakarta.persistence.*;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "filial")
 @Getter
 @Setter
-public class Filial {
+public class Filial implements Serializable {
+
+    @java.io.Serial
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
