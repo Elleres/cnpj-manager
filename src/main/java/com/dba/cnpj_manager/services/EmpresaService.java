@@ -1,6 +1,7 @@
 package com.dba.cnpj_manager.services;
 
 import com.dba.cnpj_manager.dto.create.EmpresaCreateDTO;
+import com.dba.cnpj_manager.dto.response.EmpresaResponseDTO;
 import com.dba.cnpj_manager.dto.update.EmpresaUpdateDTO;
 import com.dba.cnpj_manager.exceptions.BusinessValidationException;
 import com.dba.cnpj_manager.exceptions.ResourceNotFoundException;
@@ -13,6 +14,7 @@ import org.jspecify.annotations.NonNull;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class EmpresaService {
@@ -39,11 +41,6 @@ public class EmpresaService {
     @Transactional(readOnly = true)
     public Empresa buscarPorId(UUID id) {
         return findByIdOrThrow(id);
-    }
-
-    @Transactional(readOnly = true)
-    public List<Empresa> listarTodas() {
-        return empresaRepository.findAll();
     }
 
     @Transactional
@@ -75,6 +72,19 @@ public class EmpresaService {
     public void deletar(UUID id) {
         Empresa empresa = findByIdOrThrow(id);
         empresaRepository.delete(empresa);
+    }
+
+    public List<EmpresaResponseDTO> listarTodas() {
+        List<Empresa> empresas = empresaRepository.findAll();
+
+        // Mapeia a lista de Entidades do banco para uma lista de DTOs para o Front-end
+        return empresas.stream()
+                .map(empresa -> new EmpresaResponseDTO(
+                        empresa.getId(),
+                        empresa.getRazaoSocial(),
+                        empresa.getNomeFantasia(),
+                        empresa.getCnpjCompleto()))
+                .toList();
     }
 
     // --- MÉTODOS PRIVADOS ---
