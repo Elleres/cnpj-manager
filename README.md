@@ -10,7 +10,8 @@ O **CNPJ Manager** é uma API RESTful robusta desenvolvida para resolver a compl
 
   * **Linguagem:** Java 21
   * **Framework principal:** Spring Boot 4.x (Web, Data JPA, Validation)
-  * **Bibliotecas principais:** \* `locationtech.jts` (Java Topology Suite para cálculos de SRID 4326 / Geometria)
+  * **Bibliotecas principais:** 
+      * `locationtech.jts` (Java Topology Suite para cálculos de SRID 4326 / Geometria)
       * `hibernate-validator` (Validação de beans e CNPJ)
       * `JUnit 5` & `Mockito` (Testes Unitários)
   * **Banco de dados:** Oracle Database (com suporte a Spatial Data)
