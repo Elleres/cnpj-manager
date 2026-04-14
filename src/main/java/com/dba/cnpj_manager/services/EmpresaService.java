@@ -28,7 +28,6 @@ public class EmpresaService {
     public Empresa criar(EmpresaCreateDTO novaEmpresa) {
         BusinessValidationException ex = new BusinessValidationException("Erro ao cadastrar empresa.");
 
-        // Valida usando a mesma lógica centralizada
         validarRegrasCnpj(null, novaEmpresa.cnpjLimpo(), novaEmpresa.cnpjRaiz(), ex);
 
         if (ex.hasErrors())

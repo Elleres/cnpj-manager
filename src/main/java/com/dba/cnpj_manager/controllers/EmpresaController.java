@@ -1,7 +1,7 @@
 package com.dba.cnpj_manager.controllers;
 
 import com.dba.cnpj_manager.dto.create.EmpresaCreateDTO;
-import com.dba.cnpj_manager.dto.update.EmpresaUpdateDTO; // <-- Import do DTO de Update
+import com.dba.cnpj_manager.dto.update.EmpresaUpdateDTO;
 import com.dba.cnpj_manager.dto.response.EmpresaResponseDTO;
 import com.dba.cnpj_manager.dto.response.FilialResponseDTO;
 import com.dba.cnpj_manager.models.Empresa;
@@ -33,57 +33,71 @@ public class EmpresaController {
     }
 
     @PostMapping
+    @Operation(summary = "Criar empresa", description = "Cadastra uma nova empresa e retorna os dados salvos.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Empresa criada com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de validação nos campos (MethodArgumentNotValidException)."),
+            @ApiResponse(responseCode = "422", description = "Erro de regra de negócio (BusinessValidationException).")
+    })
     public ResponseEntity<EmpresaResponseDTO> criar(@Valid @RequestBody EmpresaCreateDTO request) {
         Empresa empresaSalva = empresaService.criar(request);
-
         EmpresaResponseDTO response = EmpresaResponseDTO.fromEntity(empresaSalva);
-
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(empresaSalva.getId())
                 .toUri();
-
         return ResponseEntity.created(location).body(response);
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Buscar por ID", description = "Retorna os detalhes de uma empresa específica.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Empresa encontrada."),
+            @ApiResponse(responseCode = "404", description = "Empresa não encontrada (ResourceNotFoundException).")
+    })
     public ResponseEntity<EmpresaResponseDTO> buscarPorId(@PathVariable UUID id) {
         Empresa empresa = empresaService.buscarPorId(id);
         return ResponseEntity.ok(EmpresaResponseDTO.fromEntity(empresa));
     }
 
     @PatchMapping("/{id}")
+    @Operation(summary = "Atualizar empresa", description = "Atualiza parcialmente os dados de uma empresa existente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Empresa atualizada com sucesso."),
+            @ApiResponse(responseCode = "400", description = "Erro de validação nos campos."),
+            @ApiResponse(responseCode = "404", description = "Empresa não encontrada."),
+            @ApiResponse(responseCode = "422", description = "Erro de regra de negócio.")
+    })
     public ResponseEntity<EmpresaResponseDTO> atualizar(
             @PathVariable UUID id,
             @Valid @RequestBody EmpresaUpdateDTO request) {
-
         Empresa empresaAtualizada = empresaService.atualizar(id, request);
-
         return ResponseEntity.ok(EmpresaResponseDTO.fromEntity(empresaAtualizada));
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deletar uma empresa baseada no id", description = "Remove uma empresa e suas entidades filhas baseado no id da empresa.")
-    @ApiResponse(responseCode = "204", description = "Deletado com sucesso")
+    @Operation(summary = "Deletar empresa", description = "Remove uma empresa e suas filhas baseado no ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Empresa removida com sucesso."),
+            @ApiResponse(responseCode = "404", description = "Empresa não encontrada.")
+    })
     public ResponseEntity<Void> deletar(@PathVariable UUID id) {
         empresaService.deletar(id);
-
-        // Retorna 204 No Content (Sucesso, sem corpo na resposta)
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping
-    @Operation(summary = "Listar todas as empresas", description = "Retorna uma lista de todas as empresas cadastradas no banco de dados.")
-    @ApiResponse(responseCode = "200", description = "Lista de empresas recuperada com sucesso.")
+    @Operation(summary = "Listar todas", description = "Retorna uma lista de todas as empresas cadastradas.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista recuperada com sucesso.")
+    })
     public ResponseEntity<List<EmpresaResponseDTO>> listarTodas() {
         List<EmpresaResponseDTO> empresas = empresaService.listarTodas();
-
-        // Retorna 200 OK com a lista (mesmo que a lista esteja vazia [])
         return ResponseEntity.ok(empresas);
     }
 
     @GetMapping("/{id}/filiais")
-    @Operation(summary = "Listar filiais de uma empresa", description = "Retorna todas as filiais vinculadas a uma empresa específica através do seu ID.")
+    @Operation(summary = "Listar filiais", description = "Retorna todas as filiais vinculadas a uma empresa.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Lista de filiais retornada."),
             @ApiResponse(responseCode = "404", description = "Empresa não encontrada.")
