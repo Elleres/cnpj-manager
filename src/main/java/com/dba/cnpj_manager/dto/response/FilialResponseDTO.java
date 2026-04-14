@@ -6,8 +6,8 @@ import java.util.UUID;
 
 public record FilialResponseDTO(
         UUID id,
-        UUID empresaId, // Evitamos retornar o objeto Empresa inteiro para não criar dependência cíclica
-                        // no JSON
+        UUID empresaId,
+        String nomeFantasia,
         String cnpjCompleto,
         TipoFilial tipo,
         Boolean ativa,
@@ -16,6 +16,7 @@ public record FilialResponseDTO(
         return new FilialResponseDTO(
                 filial.getId(),
                 filial.getEmpresa().getId(),
+                filial.getNomeFantasia(),
                 filial.getCnpjCompleto(),
                 filial.getTipo(),
                 filial.isAtiva(),

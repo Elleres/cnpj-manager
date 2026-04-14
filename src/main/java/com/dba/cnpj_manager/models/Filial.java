@@ -24,6 +24,9 @@ public class Filial implements Serializable {
     @JoinColumn(name = "empresa_id", nullable = false)
     private Empresa empresa;
 
+    @Column(name = "nome_fantasia", nullable = false)
+    private String nomeFantasia;
+
     @Column(name = "cnpj_completo", length = 14, unique = true, nullable = false)
     private String cnpjCompleto;
 

@@ -15,6 +15,7 @@ public record FilialCreateDTO(
         @NotNull(message = "O ID da empresa matriz é obrigatório.") UUID empresaId,
 
         @NotBlank(message = "O CNPJ é obrigatório.") @CNPJ(message = "O CNPJ fornecido é inválido.") String cnpjCompleto,
+        @NotBlank(message = "O nome fantasia é obrigatório.") String nomeFantasia,
 
         @NotNull(message = "O tipo da filial é obrigatório.") TipoFilial tipo,
 
@@ -29,9 +30,8 @@ public record FilialCreateDTO(
     public Filial toEntity(Empresa empresaVinculada) {
         Filial filial = new Filial();
         filial.setEmpresa(empresaVinculada);
-
         filial.setCnpjCompleto(this.cnpjLimpo());
-
+        filial.setNomeFantasia(this.nomeFantasia());
         filial.setTipo(this.tipo());
         filial.setAtiva(this.ativa());
 
