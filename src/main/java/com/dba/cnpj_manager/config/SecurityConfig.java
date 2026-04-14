@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -39,7 +40,6 @@ public class SecurityConfig {
                     .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                     .build();
         } catch (Exception e) {
-            // Traduz a exceção genérica do Spring para um erro claro de estado da aplicação
             throw new IllegalStateException("Falha crítica ao configurar a cadeia de filtros de segurança", e);
         }
     }
@@ -49,9 +49,17 @@ public class SecurityConfig {
         try {
             return configuration.getAuthenticationManager();
         } catch (Exception e) {
-            // Lança um erro não checado indicando exatamente onde a configuração quebrou
-            throw new IllegalStateException("Erro ao recuperar o AuthenticationManager do contexto do Spring", e);
+            throw new IllegalStateException("Erro ao recuperar o AuthenticationManager", e);
         }
+    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(autenticacaoService);
+
+        authProvider.setPasswordEncoder(passwordEncoder());
+
+        return authProvider;
     }
 
     @Bean
