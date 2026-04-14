@@ -70,6 +70,23 @@ public class GlobalExceptionHandler {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
         }
 
+        @ExceptionHandler(TokenGenerationException.class)
+        public ResponseEntity<StandardErrorResponse> handleTokenGeneration(TokenGenerationException ex,
+                        HttpServletRequest request) {
+                // Logamos o erro real para o desenvolvedor ver no console
+                ex.printStackTrace();
+
+                StandardErrorResponse response = new StandardErrorResponse(
+                                LocalDateTime.now(),
+                                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                                "Security Error",
+                                ex.getMessage(),
+                                request.getRequestURI(),
+                                null);
+
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+
         // Status 500
         @ExceptionHandler(Exception.class)
         public ResponseEntity<StandardErrorResponse> handleGenericException(Exception ex, HttpServletRequest request) {

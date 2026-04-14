@@ -10,6 +10,7 @@ import com.dba.cnpj_manager.models.Endereco;
 import com.dba.cnpj_manager.models.Filial;
 import com.dba.cnpj_manager.repositories.EmpresaRepository;
 import com.dba.cnpj_manager.repositories.FilialRepository;
+
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;

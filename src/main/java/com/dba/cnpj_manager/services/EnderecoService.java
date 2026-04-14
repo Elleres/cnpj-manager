@@ -4,6 +4,7 @@ import com.dba.cnpj_manager.dto.update.EnderecoUpdateDTO;
 import com.dba.cnpj_manager.exceptions.ResourceNotFoundException;
 import com.dba.cnpj_manager.models.Endereco;
 import com.dba.cnpj_manager.repositories.EnderecoRepository;
+
 import org.locationtech.jts.geom.Coordinate;
 import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.PrecisionModel;

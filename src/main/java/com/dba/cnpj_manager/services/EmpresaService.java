@@ -6,6 +6,7 @@ import com.dba.cnpj_manager.exceptions.BusinessValidationException;
 import com.dba.cnpj_manager.exceptions.ResourceNotFoundException;
 import com.dba.cnpj_manager.models.Empresa;
 import com.dba.cnpj_manager.repositories.EmpresaRepository;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.jspecify.annotations.NonNull;
