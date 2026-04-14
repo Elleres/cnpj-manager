@@ -1,6 +1,7 @@
 package com.dba.cnpj_manager.services;
 
 import com.dba.cnpj_manager.dto.create.FilialCreateDTO;
+import com.dba.cnpj_manager.dto.response.FilialResponseDTO;
 import com.dba.cnpj_manager.dto.update.EnderecoUpdateDTO;
 import com.dba.cnpj_manager.dto.update.FilialUpdateDTO;
 import com.dba.cnpj_manager.exceptions.BusinessValidationException;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.jspecify.annotations.NonNull;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -91,6 +93,15 @@ public class FilialService {
         Filial filial = findByIdOrThrow(id);
 
         filialRepository.delete(filial);
+    }
+
+    public List<FilialResponseDTO> listarPorEmpresa(UUID empresaId) {
+        // Busca as filiais associadas ao ID da empresa
+        List<Filial> filiais = filialRepository.findByEmpresaId(empresaId);
+
+        return filiais.stream()
+                .map(FilialResponseDTO::fromEntity)
+                .toList();
     }
 
     // --- MÉTODOS PRIVADOS DE SUPORTE ---

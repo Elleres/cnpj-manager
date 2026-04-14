@@ -3,11 +3,14 @@ package com.dba.cnpj_manager.controllers;
 import com.dba.cnpj_manager.dto.create.EmpresaCreateDTO;
 import com.dba.cnpj_manager.dto.update.EmpresaUpdateDTO; // <-- Import do DTO de Update
 import com.dba.cnpj_manager.dto.response.EmpresaResponseDTO;
+import com.dba.cnpj_manager.dto.response.FilialResponseDTO;
 import com.dba.cnpj_manager.models.Empresa;
 import com.dba.cnpj_manager.services.EmpresaService;
+import com.dba.cnpj_manager.services.FilialService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +25,11 @@ import java.util.UUID;
 public class EmpresaController {
 
     private final EmpresaService empresaService;
+    private final FilialService filialService;
 
-    public EmpresaController(EmpresaService empresaService) {
+    public EmpresaController(EmpresaService empresaService, FilialService filialService) {
         this.empresaService = empresaService;
+        this.filialService = filialService;
     }
 
     @PostMapping
@@ -75,5 +80,16 @@ public class EmpresaController {
 
         // Retorna 200 OK com a lista (mesmo que a lista esteja vazia [])
         return ResponseEntity.ok(empresas);
+    }
+
+    @GetMapping("/{id}/filiais")
+    @Operation(summary = "Listar filiais de uma empresa", description = "Retorna todas as filiais vinculadas a uma empresa específica através do seu ID.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de filiais retornada."),
+            @ApiResponse(responseCode = "404", description = "Empresa não encontrada.")
+    })
+    public ResponseEntity<List<FilialResponseDTO>> listarFiliais(@PathVariable UUID id) {
+        List<FilialResponseDTO> filiais = filialService.listarPorEmpresa(id);
+        return ResponseEntity.ok(filiais);
     }
 }

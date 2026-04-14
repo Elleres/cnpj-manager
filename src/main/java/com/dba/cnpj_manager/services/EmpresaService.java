@@ -2,6 +2,7 @@ package com.dba.cnpj_manager.services;
 
 import com.dba.cnpj_manager.dto.create.EmpresaCreateDTO;
 import com.dba.cnpj_manager.dto.response.EmpresaResponseDTO;
+import com.dba.cnpj_manager.dto.response.FilialResponseDTO;
 import com.dba.cnpj_manager.dto.update.EmpresaUpdateDTO;
 import com.dba.cnpj_manager.exceptions.BusinessValidationException;
 import com.dba.cnpj_manager.exceptions.ResourceNotFoundException;
