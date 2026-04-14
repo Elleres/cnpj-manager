@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -73,7 +75,6 @@ public class GlobalExceptionHandler {
         @ExceptionHandler(TokenGenerationException.class)
         public ResponseEntity<StandardErrorResponse> handleTokenGeneration(TokenGenerationException ex,
                         HttpServletRequest request) {
-                // Logamos o erro real para o desenvolvedor ver no console
                 ex.printStackTrace();
 
                 StandardErrorResponse response = new StandardErrorResponse(
@@ -85,6 +86,21 @@ public class GlobalExceptionHandler {
                                 null);
 
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+
+        @ExceptionHandler(BadCredentialsException.class)
+        public ResponseEntity<StandardErrorResponse> handleBadCredentials(BadCredentialsException ex,
+                        HttpServletRequest request) {
+
+                StandardErrorResponse response = new StandardErrorResponse(
+                                LocalDateTime.now(),
+                                HttpStatus.UNAUTHORIZED.value(),
+                                "Authentication Error",
+                                "Usuário ou senha inválidos.",
+                                request.getRequestURI(),
+                                null);
+
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
         }
 
         // Status 500
