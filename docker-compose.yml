@@ -1,0 +1,16 @@
+services:
+  oracle-db:
+    image: gvenzl/oracle-free:latest
+    container_name: oracle-cnpj-db
+    environment:
+      ORACLE_PASSWORD: ${ORACLE_PASSWORD}
+      APP_USER: ${DB_USER}
+      APP_USER_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "1521:1521"
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+    restart: unless-stopped
+
+volumes:
+  oracle_data:
