@@ -28,5 +28,5 @@ jobs:
           context: .
           push: true
           tags: |
-            seu-usuario/cnpj-manager-api:latest
-            seu-usuario/cnpj-manager-api:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME}}/cnpj-manager-api:latest
+            ${{ secrets.DOCKERHUB_USERNAME}}/cnpj-manager-api:${{ github.sha }}
