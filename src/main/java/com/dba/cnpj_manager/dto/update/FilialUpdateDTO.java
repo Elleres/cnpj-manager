@@ -6,11 +6,11 @@ import org.hibernate.validator.constraints.br.CNPJ;
 
 public record FilialUpdateDTO(
         @CNPJ(message = "O CNPJ fornecido é inválido.") String cnpjCompleto,
-
+        String nomeFantasia,
         TipoFilial tipo,
         Boolean ativa,
-
         @Valid EnderecoUpdateDTO endereco) {
+
     public String cnpjLimpo() {
         return (this.cnpjCompleto == null) ? null : this.cnpjCompleto.replaceAll("\\D", "");
     }
