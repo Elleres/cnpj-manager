@@ -75,7 +75,6 @@ public class EmpresaService {
     public List<EmpresaResponseDTO> listarTodas() {
         List<Empresa> empresas = empresaRepository.findAll();
 
-        // Mapeia a lista de Entidades do banco para uma lista de DTOs para o Front-end
         return empresas.stream()
                 .map(empresa -> new EmpresaResponseDTO(
                         empresa.getId(),
@@ -85,7 +84,6 @@ public class EmpresaService {
                 .toList();
     }
 
-    // --- MÉTODOS PRIVADOS ---
     @NonNull
     private Empresa findByIdOrThrow(UUID id) {
         return empresaRepository.findById(id)
@@ -97,15 +95,12 @@ public class EmpresaService {
 
         String raizAtual = (empresaExistente != null) ? empresaExistente.getCnpjCompleto().substring(0, 8) : null;
 
-        // Se é criação OU a raiz mudou
         if (empresaExistente == null || !novaRaiz.equals(raizAtual)) {
 
-            // Se o CNPJ completo já existe
             if (empresaRepository.findByCnpjCompleto(novoCnpjLimpo).isPresent()) {
                 ex.addError(BusinessValidationException.FIELD_CNPJ, "O CNPJ informado já está em uso.");
             }
 
-            // Se já existe uma matriz usando o CNPJ raiz
             if (empresaRepository.existsByCnpjCompletoStartingWith(novaRaiz)) {
                 ex.addError(BusinessValidationException.FIELD_CNPJ,
                         "Já existe uma empresa matriz cadastrada para esta família de CNPJ.");

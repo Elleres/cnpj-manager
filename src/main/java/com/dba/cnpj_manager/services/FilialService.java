@@ -96,15 +96,12 @@ public class FilialService {
     }
 
     public List<FilialResponseDTO> listarPorEmpresa(UUID empresaId) {
-        // Busca as filiais associadas ao ID da empresa
         List<Filial> filiais = filialRepository.findByEmpresaId(empresaId);
 
         return filiais.stream()
                 .map(FilialResponseDTO::fromEntity)
                 .toList();
     }
-
-    // --- MÉTODOS PRIVADOS DE SUPORTE ---
 
     private void validarRegrasCnpj(Filial filialExistente, String novoCnpjLimpo, Empresa matriz,
             BusinessValidationException ex) {
@@ -144,7 +141,6 @@ public class FilialService {
         if (novoEnd.cep() != null)
             enderecoAtual.setCep(novoEnd.cep());
 
-        // Recálculo da Geometria (JTS) se as coordenadas mudarem
         if (novoEnd.latitude() != null && novoEnd.longitude() != null) {
             GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
             enderecoAtual.setGeom(geometryFactory.createPoint(new Coordinate(novoEnd.longitude(), novoEnd.latitude())));
