@@ -1,8 +1,7 @@
-# Estágio 1: Build (Compilação)
 FROM eclipse-temurin:21-jdk AS builder
 WORKDIR /build
 
-# Copia os arquivos do Maven Wrapper primeiro (para aproveitar o cache do Docker)
+# Copia os arquivos do Maven Wrapper primeiro
 COPY .mvn/ .mvn/
 COPY mvnw pom.xml ./
 
@@ -10,11 +9,10 @@ COPY mvnw pom.xml ./
 RUN chmod +x ./mvnw
 RUN ./mvnw dependency:go-offline -B
 
-# Copia o código fonte e compila o .jar (ignorando os testes que pausamos)
+# Copia o código fonte e compila o .ja
 COPY src/ ./src/
 RUN ./mvnw clean package -DskipTests
 
-# Estágio 2: Run (Execução)
 FROM eclipse-temurin:21-jre
 WORKDIR /app
 

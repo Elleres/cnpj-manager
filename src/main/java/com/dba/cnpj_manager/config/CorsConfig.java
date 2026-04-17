@@ -14,20 +14,22 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        
-        // Mantemos todas as portas que você configurou
-        configuration.setAllowedOrigins(List.of("http://localhost:9000", "http://localhost:5173", "http://localhost:9001"));
-        
+
+        // CORS aceitando todas as fontes para apresentar o projeto, quando fizer deploy
+        // é necessário colocar a URL de onde o front fará as requisições.
+        // configuration.setAllowedOrigins(List.of("http://localhost:9000",
+        // http://localhost:5173", "http://localhost:9001"));
+        configuration.setAllowedOrigins(List.of("*"));
+
         // Incluindo PATCH e OPTIONS
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        
+
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        // Aplica essa regra para todos os endpoints da API
         source.registerCorsConfiguration("/**", configuration);
-        
+
         return source;
     }
 }
