@@ -19,7 +19,7 @@ public class CorsConfig {
         // é necessário colocar a URL de onde o front fará as requisições.
         // configuration.setAllowedOrigins(List.of("http://localhost:9000",
         // http://localhost:5173", "http://localhost:9001"));
-        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedOriginPatterns(List.of("*"));
 
         // Incluindo PATCH e OPTIONS
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
